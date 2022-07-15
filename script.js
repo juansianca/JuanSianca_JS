@@ -1,33 +1,52 @@
 /*
-DIFERENCIA CON ENTREGABLE OPCIONAL1 !!!!! Toda la información que el usuario ingresa se va almacenando en variables, que luego son gardadas en un array previamente definido. Este array es mostrado por consola al finalizar
- el proceso con el usuario. 
+1er Entregable Proyecto Final:
 
-En este SIMULADOR INTERACTIVO primero se le solicita al usuario ingresar su nombre, luego se explica que a continuación podran ingeresar
-SI o NO dependiendo si quieren comprar el producto descripto en cada una de las 5 ventanas, al finalizar con los 5 productos se pregunta la forma de pago
+En este simulador se le solicita al usuario ingresar su nombre, apellido, edad, dirección de entrega, email.
+Validación: edad > 18, sino se aplica un alert de que se necesita ser mayor de 18 años para realizar la compra.
+
+Luego se saluda al cliente y se explica que a continuación podran ingeresar: "SI" o "NO" dependiendo si quieren comprar el producto descripto en cada una de las 5 ventanas, al finalizar con los 5 productos se pregunta la forma de pago
 la cual puede ser, 1 - efectivo, 2 - debito o 3 - credito al cual se le suma un 10%. 
+Validaciones: que se haya ingresado "SI" o "NO" en los producto y 1 o 2 o 3 en el método de pago. Si no, sale alert alertando que los valores son incorrectos. 
 
-Al finalizar se muestra el monto total de la compra el cual es la suma de los valores de los productos para los cuales se ingreso SI + IVA + Intereses si aplicaran. 
+Al finalizar se muestra el monto total de la compra el cual es la suma de los valores de los productos para los cuales se ingreso "SI" + IVA + Intereses si aplicaran. 
+El calculo del monto final se hace aplicando funciones, que se utilizan segun sea el metodo de pago 1,2 o 3 con un switch. 
 
 El último alert es un agradecimiento por haber comprado. 
 
-Respecto a la consigna, se aplican ciclos con validaciones de los datos ingresados (si o no para los productos, 1,2 o3 para el metodo de pago), y funciones para realizar los calculos. 
+Por último se muestra en consola el array "carrito1" creado a partir del objeto array "Carrito" con todos los datos del cliente y de la compra.
 
 */
 
 class Carrito {
-    constructor(nombre,producto1,producto2,producto3,producto4,producto5,modoDePago,valorTotal,montoTotal){
+    constructor(nombre,apellido,edad,domicilio,email,producto1,producto2,producto3,producto4,producto5,modoDePago,valorTotal,montoTotalEfectivo,montoTotalDebito,montoTotalCredito){
     this.nombre = nombre;
+    this.apellido = apellido;
+    this.edad = edad;
+    this.domicilio = domicilio;
+    this.email = email;
     this.producto1 = producto1;
     this.producto2 = producto2;
     this.producto3 = producto3;
     this.producto4 = producto4;
     this.producto5 = producto5;
     this.modoDePago = modoDePago;
-    this.montoTotal = montoTotal;
+    this.montoTotalEfectivo = montoTotalEfectivo;
+    this.montoTotalDebito = montoTotalDebito;
+    this.montoTotalCredito = montoTotalCredito;
     this.valorTotal = valorTotal;
 }    }
 
-nombre = (prompt("Ingresa tu nombre"))
+do{
+    nombre = (prompt("Ingresa tu nombre"))
+    apellido = (prompt("Ingresa tu apellido"))
+    edad = (prompt("Ingresas tu edad"))
+    domicilio = (prompt("Ingresa tu domicilio de entrega"))
+    email = (prompt("Ingresa tu email, nos contactaremos con vos para enviarte la informacíon de tu compra y envio"))
+
+    if(edad < 18)
+        alert("Es necesario ser mayor de edad para realizar tu compra online")
+
+} while((edad < 18))
 
 alert(`Hola ${nombre} a contunuación podra ingresar la palabra SI en caso de que quieras comprar el artículo mostrado en pantalla, caso contrario ingresá NO, al finalizar podrá ingresar el método de pago.`);
 
@@ -82,27 +101,42 @@ if (producto5 == "si") {
 
 valorTotal=(valor1+valor2+valor3+valor4+valor5)
 
+const impuestoIVA = (valorTotal) => valorTotal * 1.21
+
+const intereses = (valorTotal) => (valorTotal * 1.21)*1.1
+
+function calcularMontoEfectivo (ValorTotal){
+    return impuestoIVA(ValorTotal) 
+}
+
+function calcularMontoCredito (ValorTotal){
+    return intereses(valorTotal) 
+}
+
+montoTotalEfectivo=0
+montoTotalDebito=0
+montoTotalCredito=0
 
 switch(modoDePago){
     case 1:
-        alert((valorTotal)*1.21);
-        montoTotal=valorTotal*1.21;
+        montoTotalEfectivo = calcularMontoEfectivo(valorTotal)
+        alert("El monto total es =" + montoTotalEfectivo);
         alert(`Gracias por tu compra ${nombre}!`)
         break;
     case 2:
-        alert((valorTotal)*1.21);
-        montoTotal=valorTotal*1.21;
+        montoTotalDebito = calcularMontoEfectivo(valorTotal)
+        alert("El monto total es =" + montoTotalDebito);
         alert(`Gracias por tu compra ${nombre}!`)
         break;
     case 3:
-        alert(((valorTotal)*1.21)*1.1);
-        montoTotal=((valorTotal)*1.21)*1.1;
+        montoTotalCredito = calcularMontoCredito(valorTotal)
+        alert("El monto total es =" + montoTotalCredito);
         alert(`Gracias por tu compra ${nombre}!`)
         break;
    
 }
 
-const Carrito1 = new Carrito(nombre,producto1,producto2,producto3,producto4,producto5,modoDePago,valorTotal,montoTotal) 
+const Carrito1 = new Carrito(nombre,apellido,edad,domicilio,email,producto1,producto2,producto3,producto4,producto5,modoDePago,valorTotal,montoTotalEfectivo,montoTotalDebito,montoTotalCredito) 
 
 console.log(Carrito1)
 
